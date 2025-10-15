@@ -1,3 +1,10 @@
+#media-player-heading {
+  margin-top: -150px;
+}
+
+#upload-button {
+ background-color: #93b4f2;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +46,18 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Media Player Rectangle Styles */
+.media-player-rectangle {
+  width: 200%;
+  height: 300px; /* Adjust height as needed */
+  background-color: var(--background-color, #ffffff); /* Matches page background */
+  border: 5px solid #234991; 
+  border-radius: 8px; /* Optional: rounded corners */
+  margin: 20px 0; /* Space around the rectangle */
+  margin-left: -160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
