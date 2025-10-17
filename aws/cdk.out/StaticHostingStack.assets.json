@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "1a805c59e699870eb7c9b06b904e32d752b7bfddff39aadb7836d3c7081ceee8": {
+      "displayName": "StaticHostingStack Template",
+      "source": {
+        "path": "StaticHostingStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-ap-southeast-2-7ee5a762": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2",
+          "objectKey": "1a805c59e699870eb7c9b06b904e32d752b7bfddff39aadb7836d3c7081ceee8.json",
+          "region": "ap-southeast-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

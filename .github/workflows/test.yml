@@ -40,3 +40,13 @@ jobs:
       run: |
         cd Frontend/my-frontend
         npm run build
+      env:
+        VITE_S3_BUCKET_NAME: ${{ secrets.TEST_MEDIA_BUCKET_NAME }}
+    
+    - name: Deploy to Test Environment
+      run: |
+        aws s3 sync Frontend/my-frontend/dist/ s3://${{ secrets.TEST_HOSTING_BUCKET_NAME }} --delete
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ap-southeast-2

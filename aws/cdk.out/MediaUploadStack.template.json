@@ -1,0 +1,413 @@
+{
+ "Resources": {
+  "BuildMediaUploadsBucket8BCEC30C": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "swe40006-build-media-uploads-",
+       {
+        "Ref": "AWS::AccountId"
+       }
+      ]
+     ]
+    },
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "PUT",
+        "POST",
+        "GET"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 3000
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "IgnorePublicAcls": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/BuildMediaUploadsBucket/Resource"
+   }
+  },
+  "TestMediaUploadsBucket8A75A7E5": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "swe40006-test-media-uploads-",
+       {
+        "Ref": "AWS::AccountId"
+       }
+      ]
+     ]
+    },
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "PUT",
+        "POST",
+        "GET"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 3000
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "IgnorePublicAcls": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/TestMediaUploadsBucket/Resource"
+   }
+  },
+  "ProdMediaUploadsBucket2842A5E3": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "swe40006-prod-media-uploads-",
+       {
+        "Ref": "AWS::AccountId"
+       }
+      ]
+     ]
+    },
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "PUT",
+        "POST",
+        "GET"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 3000
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "IgnorePublicAcls": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/ProdMediaUploadsBucket/Resource"
+   }
+  },
+  "MediaUploadUser915B3F75": {
+   "Type": "AWS::IAM::User",
+   "Properties": {
+    "UserName": "swe40006-media-upload-user"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/MediaUploadUser/Resource"
+   }
+  },
+  "MediaUploadUserDefaultPolicyA8FAC4A2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "BuildMediaUploadsBucket8BCEC30C",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BuildMediaUploadsBucket8BCEC30C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "BuildMediaUploadsBucket8BCEC30C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "TestMediaUploadsBucket8A75A7E5",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "TestMediaUploadsBucket8A75A7E5",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "TestMediaUploadsBucket8A75A7E5",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ProdMediaUploadsBucket2842A5E3",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ProdMediaUploadsBucket2842A5E3",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ProdMediaUploadsBucket2842A5E3",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MediaUploadUserDefaultPolicyA8FAC4A2",
+    "Users": [
+     {
+      "Ref": "MediaUploadUser915B3F75"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/MediaUploadUser/DefaultPolicy/Resource"
+   }
+  },
+  "MediaUploadAccessKey127FFD06": {
+   "Type": "AWS::IAM::AccessKey",
+   "Properties": {
+    "UserName": {
+     "Ref": "MediaUploadUser915B3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/MediaUploadAccessKey/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/z2OzQrCMBCEn8V7spYUH0A9elAUzxK3K2zTH+kmioS8u0krnma+7zCMAWMqqFb2LRobpzu+Q7x4i05ldYtSQ9wFdOTV/jEsLSm2PcSr0FTknKexY/wU/LUtIokcaHZ/SKngMfhnyDPD2BC0sn6ZGjb5RCvMegqD557gvOQX8N8ZU6EAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaUploadStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "BuildMediaBucketName": {
+   "Value": {
+    "Ref": "BuildMediaUploadsBucket8BCEC30C"
+   }
+  },
+  "TestMediaBucketName": {
+   "Value": {
+    "Ref": "TestMediaUploadsBucket8A75A7E5"
+   }
+  },
+  "ProdMediaBucketName": {
+   "Value": {
+    "Ref": "ProdMediaUploadsBucket2842A5E3"
+   }
+  },
+  "BucketRegion": {
+   "Value": "ap-southeast-2"
+  },
+  "AccessKeyId": {
+   "Value": {
+    "Ref": "MediaUploadAccessKey127FFD06"
+   }
+  },
+  "SecretAccessKey": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MediaUploadAccessKey127FFD06",
+     "SecretAccessKey"
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
