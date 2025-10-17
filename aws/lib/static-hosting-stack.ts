@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib'
 import * as s3 from 'aws-cdk-lib/aws-s3'
+import * as iam from 'aws-cdk-lib/aws-iam'
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins'
 import { Construct } from 'constructs'
@@ -65,6 +66,27 @@ export class StaticHostingStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'ProdCloudFrontURL', {
       value: prodDistribution.distributionDomainName,
+    })
+
+    // Create separate deployment user for static hosting
+    const deployUser = new iam.User(this, 'StaticDeployUser', {
+      userName: 'swe40006-static-deploy-user',
+    })
+
+    buildBucket.grantReadWrite(deployUser)
+    testBucket.grantReadWrite(deployUser)
+    prodBucket.grantReadWrite(deployUser)
+
+    const deployAccessKey = new iam.AccessKey(this, 'StaticDeployAccessKey', {
+      user: deployUser,
+    })
+
+    new cdk.CfnOutput(this, 'DeployAccessKeyId', {
+      value: deployAccessKey.accessKeyId,
+    })
+
+    new cdk.CfnOutput(this, 'DeploySecretAccessKey', {
+      value: deployAccessKey.secretAccessKey.unsafeUnwrap(),
     })
   }
 }

@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-2",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-2",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2/a80562dde8b9c661b8310145c84f8dea9e5b4482320143fb19950b4b00511414.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2/7a352653188f183d843a3b3eb15145c97ae2087bc73ab10a91619f0294f8d340.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,6 +106,12 @@
             "data": "SecretAccessKey"
           }
         ],
+        "/MediaUploadStack/UploadUserArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UploadUserArn"
+          }
+        ],
         "/MediaUploadStack/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
@@ -144,7 +150,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-2",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-2",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2/1a805c59e699870eb7c9b06b904e32d752b7bfddff39aadb7836d3c7081ceee8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2/c4d1ea04bdf226a8cc65c65f17542675be2e3bf713c7525836224a27ed4c0ef6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -224,6 +230,36 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProdCloudFrontURL"
+          }
+        ],
+        "/StaticHostingStack/StaticDeployUser/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticDeployUser473F28E9"
+          }
+        ],
+        "/StaticHostingStack/StaticDeployUser/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticDeployUserDefaultPolicy6F46E7A8"
+          }
+        ],
+        "/StaticHostingStack/StaticDeployAccessKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticDeployAccessKeyAFCB925B"
+          }
+        ],
+        "/StaticHostingStack/DeployAccessKeyId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployAccessKeyId"
+          }
+        ],
+        "/StaticHostingStack/DeploySecretAccessKey": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeploySecretAccessKey"
           }
         ],
         "/StaticHostingStack/CDKMetadata/Default": [

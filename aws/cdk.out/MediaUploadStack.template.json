@@ -374,6 +374,14 @@
      "SecretAccessKey"
     ]
    }
+  },
+  "UploadUserArn": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MediaUploadUser915B3F75",
+     "Arn"
+    ]
+   }
   }
  },
  "Parameters": {

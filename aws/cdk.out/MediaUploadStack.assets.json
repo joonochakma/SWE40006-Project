@@ -1,16 +1,16 @@
 {
   "version": "48.0.0",
   "files": {
-    "a80562dde8b9c661b8310145c84f8dea9e5b4482320143fb19950b4b00511414": {
+    "7a352653188f183d843a3b3eb15145c97ae2087bc73ab10a91619f0294f8d340": {
       "displayName": "MediaUploadStack Template",
       "source": {
         "path": "MediaUploadStack.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-ap-southeast-2-3a71e089": {
+        "current_account-ap-southeast-2-fd188ad2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-2",
-          "objectKey": "a80562dde8b9c661b8310145c84f8dea9e5b4482320143fb19950b4b00511414.json",
+          "objectKey": "7a352653188f183d843a3b3eb15145c97ae2087bc73ab10a91619f0294f8d340.json",
           "region": "ap-southeast-2",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-2"
         }

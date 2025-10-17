@@ -51,7 +51,7 @@ export class MediaUploadStack extends cdk.Stack {
       userName: 'swe40006-media-upload-user',
     })
 
-    // Grant upload permissions to all buckets
+    // Grant upload permissions to all media buckets
     buildBucket.grantPut(uploadUser)
     buildBucket.grantRead(uploadUser)
     testBucket.grantPut(uploadUser)
@@ -86,6 +86,10 @@ export class MediaUploadStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'SecretAccessKey', {
       value: accessKey.secretAccessKey.unsafeUnwrap(),
+    })
+
+    new cdk.CfnOutput(this, 'UploadUserArn', {
+      value: uploadUser.userArn,
     })
   }
 }
