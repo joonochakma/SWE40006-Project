@@ -13,6 +13,9 @@ on:
         - development 
         default: development
 
+permissions:
+  actions: read
+
 
 jobs:
   deploy:
