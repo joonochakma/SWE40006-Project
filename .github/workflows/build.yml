@@ -1,15 +1,14 @@
-name: Test Pipeline
+name: Build Pipeline
 
 on:
-  workflow_run:
-    workflows: ["Build Pipeline"]
-    types:
-      - completed
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
     - uses: actions/checkout@v4
@@ -26,17 +25,18 @@ jobs:
         cd Frontend/my-frontend
         npm ci
     
-    - name: Run linting
+    - name: Run ESLint
       run: |
         cd Frontend/my-frontend
         npm run lint
     
-    - name: Run tests
-      run: |
-        cd Frontend/my-frontend
-        npm test --if-present
-    
-    - name: Test build
+    - name: Build application
       run: |
         cd Frontend/my-frontend
         npm run build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: Frontend/my-frontend/dist/
