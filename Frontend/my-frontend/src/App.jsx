@@ -2,6 +2,7 @@ import { useState, useRef  } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import handleFileChange from './funcs/handleFileChange'
 
 function App() {
   const fileInputRef = useRef(null) // Reference to the hidden file input
@@ -10,21 +11,7 @@ function App() {
     // Trigger the hidden file input click
     fileInputRef.current?.click()
   }
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      // Check if it's an audio file
-      if (file.type.startsWith('audio/')) {
-        console.log('Selected Audio File:', file.name)
-      } else {
-        alert('Please Select an Audio File')
-        // Reset the input
-        event.target.value = ''
-      }
-    }
-  }
-
+  
   return (
     <>
       <h1 id="media-player-heading">Media Player</h1>
