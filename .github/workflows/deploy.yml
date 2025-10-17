@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: "kanga333/variable-mapper@master"
       with:
         key: "${{ github.event.inputs.environment }}"
         map: |
