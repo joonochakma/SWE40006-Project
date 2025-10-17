@@ -44,3 +44,11 @@ jobs:
       with:
         name: build-files
         path: Frontend/my-frontend/dist/ 
+    
+    - name: Print Run ID
+      run: echo "The workflow run ID is ${{ github.run_id }}"
+    - name: Use Run ID in a script
+      run: |
+        RUN_ID=${{ github.run_id }}
+        echo "Processing with run ID: $RUN_ID"
+        # Further actions using the RUN_ID

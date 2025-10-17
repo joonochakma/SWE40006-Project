@@ -12,6 +12,10 @@ on:
         - production
         - development 
         default: development
+      run_id:
+        description: 'run_id for artifact'
+        required: true
+        type: string
 
 permissions:
   actions: read
@@ -42,6 +46,7 @@ jobs:
         name: build-files
         github-token: ${{ secrets.GITHUB_TOKEN }} 
         path: ./dist
+        run-id: ${{ github.event.inputs.run_id }}
     
     - name: Display structure of downloaded files
       run: ls -R ./dist
