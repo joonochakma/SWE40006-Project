@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd Frontend/my-frontend
-        npm ci
+        npm install --legacy-peer-deps
     
     - name: Build for production
       run: |
