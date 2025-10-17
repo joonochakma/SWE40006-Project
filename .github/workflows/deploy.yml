@@ -25,13 +25,13 @@ jobs:
         map: |
           {
             "testing": {
-              "S3_BUCKET": "${{ secrets.TEST_HOSTING_BUCKET_NAME }}",
+              "S3_BUCKET": "${{ secrets.TEST_HOSTING_BUCKET_NAME }}"
             },
             "production": {
-              "S3_BUCKET": "${{ secrets.PROD_HOSTING_BUCKET_NAME }}",
+              "S3_BUCKET": "${{ secrets.PROD_HOSTING_BUCKET_NAME }}"
             },
             "development": {
-              "S3_BUCKET": "${{ secrets.BUILD_HOSTING_BUCKET_NAME }}",
+              "S3_BUCKET": "${{ secrets.BUILD_HOSTING_BUCKET_NAME }}"
             }
           }
     - uses: actions/download-artifact@v4
