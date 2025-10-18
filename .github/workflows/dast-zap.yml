@@ -1,0 +1,39 @@
+name: DAST OWASP ZAP
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 4 * * 1'  
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      
+      - name: Start web app
+        run: |
+          npm install
+          npm run build --if-present
+          npm start &
+          sleep 10  
+
+      
+      - name: Run OWASP ZAP baseline scan
+        run: |
+          docker run --network="host" \
+            -v $(pwd):/zap/wrk/:rw \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://swe40006-build-hosting-730335304134.s3-website-ap-southeast-2.amazonaws.com/ -r zap_report.html -I
+
+      
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-html-report
+          path: zap_report.html
