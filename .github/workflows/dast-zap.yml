@@ -1,11 +1,70 @@
-name: DAST OWASP ZAP
+# name: DAST OWASP ZAP
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches: [main]
+#   schedule:
+#     - cron: '0 4 * * 1' # every Monday 4AM UTC
+
+# jobs:
+#   zap_scan:
+#     runs-on: ubuntu-latest
+
+#     # tell all steps to run inside your subfolder
+#     defaults:
+#       run:
+#         working-directory: SWE40006-PROJECT/Frontend/my-frontend
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: npm
+#           cache-dependency-path: SWE40006-PROJECT/Frontend/my-frontend/package-lock.json
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Build app
+#         run: npm run build
+
+#       # serve the built React app (Vite: dist, CRA: build)
+#       - name: Start web app
+#         run: |
+#           npx serve -s dist -l 3000 &     # for Vite
+#           # npx serve -s build -l 3000 &  # if CRA
+#           sleep 10                        # give it a few seconds to start
+
+#       - name: Run OWASP ZAP baseline scan
+#         run: |
+#           docker run --network="host" \
+#             -v "$PWD":/zap/wrk/:rw \
+#             ghcr.io/zaproxy/zaproxy:stable \
+#             zap-baseline.py -t http://localhost:3000 -r zap_report.html -I
+
+#       - name: Upload ZAP report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: zap-html-report
+#           path: SWE40006-Project/frontend/myfrontend/zap_report.html
+
+
+
+
+
+name: DAST OWASP ZAP (S3 Website)
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
   schedule:
-    - cron: '0 4 * * 1'  
+    - cron: '0 4 * * 1'  # every Monday 4AM UTC
 
 jobs:
   zap_scan:
@@ -15,25 +74,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      
-      - name: Start web app
-        run: |
-          npm install
-          npm run build --if-present
-          npm start &
-          sleep 10  
-
-      
       - name: Run OWASP ZAP baseline scan
         run: |
-          docker run --network="host" \
-            -v $(pwd):/zap/wrk/:rw \
+          docker run --rm \
+            -v ${{ github.workspace }}:/zap/wrk/:rw \
             ghcr.io/zaproxy/zaproxy:stable \
-            zap-baseline.py -t http://swe40006-build-hosting-730335304134.s3-website-ap-southeast-2.amazonaws.com/ -r zap_report.html -I
+            zap-baseline.py \
+              -t "http://swe40006-build-hosting-730335304134.s3-website-ap-southeast-2.amazonaws.com/" \
+              -r zap_report.html \
+              -I \
+              -m 5
 
-      
-      - name: Upload ZAP report
+      - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: zap-html-report
+          name: zap-dast-report
           path: zap_report.html
