@@ -1,0 +1,48 @@
+name: Semgrep SAST
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch: 
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+
+      - name: Run Semgrep (fail on high)
+        run: |
+          semgrep ci \
+            --config p/ci \
+            --config p/javascript \
+            --config p/react \
+            --config p/nodejs \
+            --error \
+            --severity ERROR \
+            --sarif --output semgrep.sarif
+
+      
+      - name: Upload SARIF to GitHub Code Scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
