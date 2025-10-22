@@ -57,7 +57,46 @@
   border-radius: 8px; /* Optional: rounded corners */
   margin: 20px 0; /* Space around the rectangle */
   margin-left: -160px;
+  position: relative;
+  flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.file-name {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-150%);
+  text-align: center;
+  font-weight: bold;
+  color: #234991;
+}
+
+.control-buttons {
+  display: flex;
+  flex-direction: row; /* This ensures horizontal layout */
+  gap: 30px;
+  margin-bottom: -200px;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.circle-button:hover {
+  background-color: #0056b3;
 }
