@@ -50,7 +50,7 @@
 
 /* Media Player Rectangle Styles */
 .media-player-rectangle {
-  width: 200%;
+  width: 150%;
   height: 300px; /* Adjust height as needed */
   background-color: var(--background-color, #ffffff); /* Matches page background */
   border: 5px solid #234991; 

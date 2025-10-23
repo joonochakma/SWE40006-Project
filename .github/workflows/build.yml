@@ -5,6 +5,17 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+        - testing
+        - production
+        - development
+        default: development
 
 jobs:
   build:
@@ -30,6 +41,22 @@ jobs:
         cd Frontend/my-frontend
         npm run lint
     
+    - uses: "kanga333/variable-mapper@master"
+      with:
+        key: "${{ github.event.inputs.environment || 'development' }}"
+        map: |
+          {
+            "testing": {
+              "MEDIA_BUCKET": "${{ secrets.TEST_MEDIA_BUCKET_NAME }}"
+            },
+            "production": {
+              "MEDIA_BUCKET": "${{ secrets.PROD_MEDIA_BUCKET_NAME }}"
+            },
+            "development": {
+              "MEDIA_BUCKET": "${{ secrets.BUILD_MEDIA_BUCKET_NAME }}"
+            }
+          }
+    
     - name: Build application
       run: |
         cd Frontend/my-frontend
@@ -37,7 +64,7 @@ jobs:
       env:
         VITE_AWS_ACCESS_KEY_ID: ${{ secrets.MEDIA_AWS_ACCESS_KEY_ID }}
         VITE_AWS_SECRET_ACCESS_KEY: ${{ secrets.MEDIA_AWS_SECRET_ACCESS_KEY }}
-        VITE_S3_BUCKET_NAME: ${{ secrets.BUILD_MEDIA_BUCKET_NAME }}
+        VITE_S3_BUCKET_NAME: ${{ env.MEDIA_BUCKET }}
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
