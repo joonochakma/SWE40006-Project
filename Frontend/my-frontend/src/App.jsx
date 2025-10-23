@@ -9,7 +9,6 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-
   const UploadClick = () => fileInputRef.current?.click();
 
   // Helper to format seconds → mm:ss
@@ -68,14 +67,14 @@ function App() {
 
         {/* Control buttons */}
         <div className="control-buttons">
-          <button className="circle-button">⏮</button>
+          {/*<button className="circle-button">⏮</button>*/}
           <button
             className="circle-button"
             onClick={() => togglePlayPause(audioRef)}
           >
             ⏯
           </button>
-          <button className="circle-button">⏭</button>
+          {/*<button className="circle-button">⏭</button>*/}
         </div>
       </div>
 
