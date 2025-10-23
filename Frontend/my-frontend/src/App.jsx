@@ -7,8 +7,20 @@ function App() {
   const audioRef = useRef(null);
   const [audioFile, setAudioFile] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const UploadClick = () => fileInputRef.current?.click();
+
+  // Helper to format seconds → mm:ss
+  const formatTime = (time) => {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -17,11 +29,19 @@ function App() {
     const updateProgress = () => {
       if (audio.duration) {
         setProgress((audio.currentTime / audio.duration) * 100);
+        setCurrentTime(audio.currentTime);
       }
     };
 
+    const setAudioDuration = () => setDuration(audio.duration || 0);
+
     audio.addEventListener('timeupdate', updateProgress);
-    return () => audio.removeEventListener('timeupdate', updateProgress);
+    audio.addEventListener('loadedmetadata', setAudioDuration);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateProgress);
+      audio.removeEventListener('loadedmetadata', setAudioDuration);
+    };
   }, []);
 
   return (
@@ -36,7 +56,14 @@ function App() {
           <div className="progress" style={{ width: `${progress}%` }}></div>
         </div>
 
-        {/* Audio element stays mounted */}
+        {/* Time Display */}
+        {audioFile && (
+          <p className="time-display">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </p>
+        )}
+
+        {/* Audio element (always mounted) */}
         <audio ref={audioRef} controls={false} preload="auto" />
 
         {/* Control buttons */}

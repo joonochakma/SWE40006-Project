@@ -118,3 +118,10 @@
   background-color: #007bff;
   transition: width 0.2s linear;
 }
+
+.time-display {
+  margin-top: -10px;
+  font-size: 14px;
+  color: #234991;
+  font-weight: 500;
+}
