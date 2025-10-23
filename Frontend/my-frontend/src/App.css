@@ -100,3 +100,21 @@
 .circle-button:hover {
   background-color: #0056b3;
 }
+
+/* Progress bar container */
+.progress-bar {
+  position: absolute;
+  top: 55%;
+  width: 60%;
+  height: 8px;
+  background-color: #cfe0ff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* Blue progress fill */
+.progress {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.2s linear;
+}

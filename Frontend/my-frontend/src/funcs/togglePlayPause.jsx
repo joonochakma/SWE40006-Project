@@ -1,10 +1,11 @@
 const togglePlayPause = (audioRef) => {
-  if (audioRef.current) {
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
+  const audio = audioRef.current;
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
   }
 };
 

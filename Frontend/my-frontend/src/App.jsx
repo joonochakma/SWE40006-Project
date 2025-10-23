@@ -1,69 +1,82 @@
-import { useRef, useState } from 'react'
-import './App.css'
-import handleFileChange from './funcs/handleFileChange'
+import { useRef, useState, useEffect } from 'react';
+import './App.css';
 import togglePlayPause from './funcs/togglePlayPause';
 
-
 function App() {
-  const fileInputRef = useRef(null) // Reference to the hidden file input
-  const [audioFile, setAudioFile] = useState(null); // State to hold the selected audio file
-  const audioRef = useRef(null); // Reference to the audio element
+  const fileInputRef = useRef(null);
+  const audioRef = useRef(null);
+  const [audioFile, setAudioFile] = useState(null);
+  const [progress, setProgress] = useState(0);
 
-  const UploadClick = () => {
-    // Trigger the hidden file input click
-    fileInputRef.current?.click()
-  }
+  const UploadClick = () => fileInputRef.current?.click();
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateProgress = () => {
+      if (audio.duration) {
+        setProgress((audio.currentTime / audio.duration) * 100);
+      }
+    };
+
+    audio.addEventListener('timeupdate', updateProgress);
+    return () => audio.removeEventListener('timeupdate', updateProgress);
+  }, []);
 
   return (
     <>
       <h1 id="media-player-heading">Media Player</h1>
 
-      {/* Media Player Rectangle */}
       <div className="media-player-rectangle">
-        {audioFile && (
-          <p className="file-name">{audioFile.name}</p>
-        )}
-        {audioFile && (
-          <audio
-            ref={audioRef}
-            src={URL.createObjectURL(audioFile)}
-            type={audioFile.type}
-          />
-        )}
+        {audioFile && <p className="file-name">{audioFile.name}</p>}
 
-        {/* Three blue circles */}
+        {/* Progress Bar */}
+        <div className="progress-bar">
+          <div className="progress" style={{ width: `${progress}%` }}></div>
+        </div>
+
+        {/* Audio element stays mounted */}
+        <audio ref={audioRef} controls={false} preload="auto" />
+
+        {/* Control buttons */}
         <div className="control-buttons">
           <button className="circle-button">⏮</button>
-          <button className="circle-button" onClick={() => togglePlayPause(audioRef)}>⏯</button>
+          <button
+            className="circle-button"
+            onClick={() => togglePlayPause(audioRef)}
+          >
+            ⏯
+          </button>
           <button className="circle-button">⏭</button>
         </div>
       </div>
 
-       <input
-          type="file"
-          ref={fileInputRef}
-          //onChange={handleFileChange}
-         onChange={(e) => {
-            const file = e.target.files[0];
-            if (file) {
-              if (file.type.startsWith('audio/')) {
-                setAudioFile(file);
-              } else {
-                alert('Please upload a valid audio file!');
-                e.target.value = ''; // reset the input
-              }
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={(e) => {
+          const file = e.target.files[0];
+          if (file) {
+            if (file.type.startsWith('audio/')) {
+              setAudioFile(file);
+              audioRef.current.src = URL.createObjectURL(file);
+              audioRef.current.load();
+            } else {
+              alert('Please upload a valid audio file!');
+              e.target.value = '';
             }
-          }}
+          }
+        }}
+        accept="audio/*"
+        style={{ display: 'none' }}
+      />
 
-          accept="audio/*" // Only allow audio files
-          style={{ display: 'none' }} // Hide the actual file input
-        />
-
-       <button id="upload-button" onClick={UploadClick}>
-          Upload Audio File
+      <button id="upload-button" onClick={UploadClick}>
+        Upload Audio File
       </button>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
