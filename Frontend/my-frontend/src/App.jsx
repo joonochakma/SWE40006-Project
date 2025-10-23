@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import './App.css';
 import togglePlayPause from './funcs/togglePlayPause';
+import TestS3Upload from './TestS3Upload';
+import MetricsDashboard from './components/MetricsDashboard';
 
 function App() {
   const fileInputRef = useRef(null);
@@ -113,6 +115,9 @@ function App() {
       <button id="upload-button" onClick={UploadClick}>
         Upload Audio File
       </button>
+      
+      <TestS3Upload />
+      <MetricsDashboard />
     </>
   );
 }

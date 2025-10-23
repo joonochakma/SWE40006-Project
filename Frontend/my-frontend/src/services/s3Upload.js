@@ -9,6 +9,7 @@ const s3Client = new S3Client({
 })
 
 export const uploadToS3 = async (file) => {
+  const startTime = performance.now()
   const key = `media/${Date.now()}-${file.name}`
   
   // Convert file to ArrayBuffer for AWS SDK v3 compatibility
@@ -24,8 +25,35 @@ export const uploadToS3 = async (file) => {
 
   try {
     await s3Client.send(command)
+    const endTime = performance.now()
+    const uploadTime = endTime - startTime
+    
+    // Log and emit performance metrics
+    const metricsData = {
+      fileName: file.name,
+      fileSize: file.size,
+      uploadTime: `${uploadTime.toFixed(2)}ms`,
+      throughput: `${(file.size / (uploadTime / 1000) / 1024).toFixed(2)} KB/s`,
+      timestamp: new Date().toISOString()
+    }
+    
+    console.log(`S3 Upload Metrics:`, metricsData)
+    
+    // Emit metrics event for dashboard
+    window.dispatchEvent(new CustomEvent('s3Metrics', {
+      detail: { type: 's3Upload', data: metricsData }
+    }))
+    
     return `https://${import.meta.env.VITE_S3_BUCKET_NAME}.s3.ap-southeast-2.amazonaws.com/${key}`
   } catch (error) {
+    const endTime = performance.now()
+    console.error(`S3 Upload Failed:`, {
+      fileName: file.name,
+      fileSize: file.size,
+      duration: `${(endTime - startTime).toFixed(2)}ms`,
+      error: error.message,
+      timestamp: new Date().toISOString()
+    })
     throw new Error(`Upload failed: ${error.message}`)
   }
 }
