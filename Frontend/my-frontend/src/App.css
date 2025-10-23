@@ -110,6 +110,7 @@
   background-color: #cfe0ff;
   border-radius: 5px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 /* Blue progress fill */

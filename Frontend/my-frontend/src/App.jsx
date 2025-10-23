@@ -9,9 +9,10 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+
   const UploadClick = () => fileInputRef.current?.click();
 
-  // Helper to format seconds → mm:ss
+  // Helper: Convert seconds → mm:ss
   const formatTime = (time) => {
     if (isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
@@ -21,6 +22,7 @@ function App() {
     return `${minutes}:${seconds}`;
   };
 
+  // Update progress & duration
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -43,6 +45,17 @@ function App() {
     };
   }, []);
 
+  // Handle user clicking/dragging on progress bar
+  const handleSeek = (e) => {
+    const audio = audioRef.current;
+    const rect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const seekTime = (clickX / width) * audio.duration;
+    audio.currentTime = seekTime;
+    setProgress((seekTime / audio.duration) * 100);
+  };
+
   return (
     <>
       <h1 id="media-player-heading">Media Player</h1>
@@ -50,8 +63,8 @@ function App() {
       <div className="media-player-rectangle">
         {audioFile && <p className="file-name">{audioFile.name}</p>}
 
-        {/* Progress Bar */}
-        <div className="progress-bar">
+        {/* Seekable Progress Bar */}
+        <div className="progress-bar" onClick={handleSeek}>
           <div className="progress" style={{ width: `${progress}%` }}></div>
         </div>
 
@@ -62,22 +75,21 @@ function App() {
           </p>
         )}
 
-        {/* Audio element (always mounted) */}
+        {/* Audio Element */}
         <audio ref={audioRef} controls={false} preload="auto" />
 
-        {/* Control buttons */}
+        {/* Control Buttons */}
         <div className="control-buttons">
-          {/*<button className="circle-button">⏮</button>*/}
           <button
             className="circle-button"
             onClick={() => togglePlayPause(audioRef)}
           >
             ⏯
           </button>
-          {/*<button className="circle-button">⏭</button>*/}
         </div>
       </div>
 
+      {/* File Upload */}
       <input
         type="file"
         ref={fileInputRef}
